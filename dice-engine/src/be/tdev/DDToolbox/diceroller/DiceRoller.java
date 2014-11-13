@@ -68,9 +68,6 @@ public class DiceRoller {
     public int getResult() {
         return result;
     }
-    public void setResult(int result) {
-        this.result = result;
-    }
 
     private int convertByteToInt(byte number) {
         Byte value = number;
