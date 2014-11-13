@@ -1,4 +1,5 @@
-import be.tdev.diceroller.DiceRoller;
+package be.tdev.DDToolbox.diceroller;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ public class DiceRollerTest {
 
     @Test
     public void simpleRollingTest() {
+        System.out.print("Simple rolling test");
         DiceRoller roller = new DiceRoller("1d6");
 
         roller.ParseExpression();
@@ -24,6 +26,7 @@ public class DiceRollerTest {
 
     @Test
     public void multipleDice() {
+        System.out.print("Multiple dice test");
         DiceRoller roller = new DiceRoller("1d6+1d6");
         roller.ParseExpression();
 
@@ -35,6 +38,7 @@ public class DiceRollerTest {
 
     @Test
     public void mediumRolling() {
+        System.out.print("medium rolling test");
         DiceRoller roller = new DiceRoller("1d6+4+1d6");
         roller.ParseExpression();
 
@@ -46,6 +50,7 @@ public class DiceRollerTest {
 
     @Test
     public void ComplexRolling() {
+        System.out.print("Complex rolling test");
         DiceRoller roller = new DiceRoller("3d6+1d8+5+5d20");
         roller.ParseExpression();
 

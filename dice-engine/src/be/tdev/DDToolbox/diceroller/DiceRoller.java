@@ -1,8 +1,6 @@
-package be.tdev.diceroller;
+package be.tdev.DDToolbox.diceroller;
 
-import com.google.common.primitives.UnsignedBytes;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**

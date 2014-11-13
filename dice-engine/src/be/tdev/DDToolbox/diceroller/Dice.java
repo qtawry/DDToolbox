@@ -1,4 +1,4 @@
-package be.tdev.diceroller;
+package be.tdev.DDToolbox.diceroller;
 
 import java.util.Random;
 
