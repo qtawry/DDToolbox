@@ -39,6 +39,7 @@ public class DiceRoller {
                     for (int j = 0; j < numberOfRoll; j++) {
 
                         this.result += operand * (rand.nextInt(diceFaces) + 1);
+                        System.out.println("dice : " + this.result);
                     }
                 }
                 //found a sign
@@ -49,8 +50,9 @@ public class DiceRoller {
                     operand = -1;
                 }
                 //found a number
-                else if( i > 1 && this.expression.charAt(i - 1 ) != 'd' ) {
+                else if( i > 1 && this.expression.charAt(i - 1 ) != 'd' && ( i+1 < this.expression.length() && this.expression.charAt(i + 1 ) != 'd') ) {
                     this.result += operand * Character.getNumericValue(this.expression.charAt(i));
+                    System.out.println("number : " + this.result);
                 }
 
             }
