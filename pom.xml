@@ -13,9 +13,7 @@
 
 
     <modules>
-        <module>dice-engine</module>
-        <module>criticals</module>
-        <module>gui</module>
+        <module>dungeonUtils</module>
     </modules>
 
     <build>
