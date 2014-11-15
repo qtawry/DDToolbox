@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 
 
-@Ignore
+
 public class DiceRollerTest {
 
     @Test
@@ -29,14 +29,14 @@ public class DiceRollerTest {
     @Test
     public void simpleDiceWithBonus() {
         System.out.println("Simple rolling test");
-        DiceRoller roller = new DiceRoller("1d6+15-1d20");
+        DiceRoller roller = new DiceRoller("1d6+15-1d8");
 
         roller.ParseExpression();
 
         int result = roller.getResult();
         System.out.println("Result: " + result);
-        Assert.assertTrue("Result is less than 1 result: " + result,  result >= 1);
-        Assert.assertTrue("Result is greater than 6 result: " + result, result <= 6);
+        Assert.assertTrue("Result is less than 7 result: " + result,  result >= 7);
+        Assert.assertTrue("Result is greater than 6 result: " + result, result <= 29);
     }
 
     @Test
