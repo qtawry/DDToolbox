@@ -6,18 +6,24 @@
 package be.tdev.dungeonUtils.gui;
 
 import be.tdev.dungeonUtils.diceroller.DiceRoller;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 /**
  *
  * @author Quentin
  */
 public class MainFrame extends javax.swing.JFrame {
+    private int numberOfDiceRolled;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        this.numberOfDiceRolled = 1;
+        this.listDiceHistorical.setModel(new DefaultListModel());
+        
     }
 
     /**
@@ -33,11 +39,15 @@ public class MainFrame extends javax.swing.JFrame {
         treasurePanel = new javax.swing.JPanel();
         criticalPanel = new javax.swing.JPanel();
         cityPanel = new javax.swing.JPanel();
-        utilityPanel = new javax.swing.JPanel();
-        rollButton = new javax.swing.JButton();
-        rollDice = new javax.swing.JTextField();
+        diceRollerPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textDiceRoller = new javax.swing.JTextPane();
+        diceExpression = new javax.swing.JTextField();
+        ButtonRoll = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listDiceHistorical = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        rollValue = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -45,16 +55,20 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(1024, 768));
+
+        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
         javax.swing.GroupLayout treasurePanelLayout = new javax.swing.GroupLayout(treasurePanel);
         treasurePanel.setLayout(treasurePanelLayout);
         treasurePanelLayout.setHorizontalGroup(
             treasurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 682, Short.MAX_VALUE)
+            .addGap(0, 909, Short.MAX_VALUE)
         );
         treasurePanelLayout.setVerticalGroup(
             treasurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Treasure", treasurePanel);
@@ -63,11 +77,11 @@ public class MainFrame extends javax.swing.JFrame {
         criticalPanel.setLayout(criticalPanelLayout);
         criticalPanelLayout.setHorizontalGroup(
             criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 682, Short.MAX_VALUE)
+            .addGap(0, 909, Short.MAX_VALUE)
         );
         criticalPanelLayout.setVerticalGroup(
             criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Criticals", criticalPanel);
@@ -76,68 +90,76 @@ public class MainFrame extends javax.swing.JFrame {
         cityPanel.setLayout(cityPanelLayout);
         cityPanelLayout.setHorizontalGroup(
             cityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 682, Short.MAX_VALUE)
+            .addGap(0, 909, Short.MAX_VALUE)
         );
         cityPanelLayout.setVerticalGroup(
             cityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 409, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("City management", cityPanel);
 
-        rollButton.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        rollButton.setText("Roll");
-        rollButton.addActionListener(new java.awt.event.ActionListener() {
+        jScrollPane1.setViewportView(textDiceRoller);
+
+        ButtonRoll.setText("Roll");
+        ButtonRoll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rollDice(evt);
+                ButtonRollActionPerformed(evt);
             }
         });
 
-        rollDice.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        rollDice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rollDice(evt);
+        listDiceHistorical.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listDiceHistorical.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listDiceHistoricalMouseClicked(evt);
             }
         });
+        jScrollPane2.setViewportView(listDiceHistorical);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setLabelFor(rollDice);
-        jLabel2.setText("Dice roller");
+        jLabel1.setText("Dice Result:");
 
-        rollValue.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel2.setText("Historic:");
 
-        javax.swing.GroupLayout utilityPanelLayout = new javax.swing.GroupLayout(utilityPanel);
-        utilityPanel.setLayout(utilityPanelLayout);
-        utilityPanelLayout.setHorizontalGroup(
-            utilityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(utilityPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout diceRollerPanelLayout = new javax.swing.GroupLayout(diceRollerPanel);
+        diceRollerPanel.setLayout(diceRollerPanelLayout);
+        diceRollerPanelLayout.setHorizontalGroup(
+            diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(diceRollerPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(utilityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(utilityPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, utilityPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(utilityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rollButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rollDice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rollValue, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(diceRollerPanelLayout.createSequentialGroup()
+                        .addComponent(ButtonRoll)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(diceExpression))
+                    .addGroup(diceRollerPanelLayout.createSequentialGroup()
+                        .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))))
+                .addGap(125, 125, 125))
+        );
+        diceRollerPanelLayout.setVerticalGroup(
+            diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(diceRollerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(diceExpression, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonRoll))
                 .addContainerGap())
         );
-        utilityPanelLayout.setVerticalGroup(
-            utilityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(utilityPanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rollDice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rollButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rollValue, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+
+        jTabbedPane1.addTab("Dice roller", diceRollerPanel);
 
         jMenu1.setText("File");
 
@@ -166,18 +188,13 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(utilityPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addComponent(utilityPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
 
@@ -188,13 +205,37 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void rollDice(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollDice
-        // TODO add your handling code here:
-        DiceRoller roller = new DiceRoller(rollDice.getText());
-        roller.ParseExpression();
-        Integer result = roller.getResult();
-        rollValue.setText(result.toString());
-    }//GEN-LAST:event_rollDice
+    /**
+     * event triggered when the button roll is pressed
+     * make a dice roll based on the expression
+     * @param evt 
+     */
+    private void ButtonRollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonRollActionPerformed
+        //get the dice expression
+        
+        String expression = diceExpression.getText();
+        
+        int result = RollDice(expression);
+        
+        //manage the list
+        DefaultListModel<String> temp =  (DefaultListModel) listDiceHistorical.getModel();
+        if( !temp.contains(expression)) {
+            temp.addElement(expression);
+        }
+        this.textDiceRoller.setText("");
+        
+    }//GEN-LAST:event_ButtonRollActionPerformed
+
+    /**
+     * event triggered whene a double click is made on the jlist
+     * @param evt 
+     */
+    private void listDiceHistoricalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listDiceHistoricalMouseClicked
+        if( evt.getClickCount() == 2) {
+            RollDice((String) listDiceHistorical.getSelectedValue());
+            
+        }
+    }//GEN-LAST:event_listDiceHistoricalMouseClicked
 
     /**
      * @param args the command line arguments
@@ -232,19 +273,41 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonRoll;
     private javax.swing.JPanel cityPanel;
     private javax.swing.JPanel criticalPanel;
+    private javax.swing.JTextField diceExpression;
+    private javax.swing.JPanel diceRollerPanel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton rollButton;
-    private javax.swing.JTextField rollDice;
-    private javax.swing.JLabel rollValue;
+    private javax.swing.JList listDiceHistorical;
+    private javax.swing.JTextPane textDiceRoller;
     private javax.swing.JPanel treasurePanel;
-    private javax.swing.JPanel utilityPanel;
     // End of variables declaration//GEN-END:variables
+    
+    private int RollDice(String expression) {
+        //roll the dice
+        DiceRoller dice = new DiceRoller(expression);
+        dice.ParseExpression();
+        
+        //update the gui
+        textDiceRoller.setText(textDiceRoller.getText() + 
+                               "[rolling " + numberOfDiceRolled + "]" +
+                               " " + expression + ": " + dice.getResult() + "\n");
+        this.textDiceRoller.setEditable(false);
+        numberOfDiceRolled++;
+        
+        return dice.getResult();
+        
+    }
+
+
 }
