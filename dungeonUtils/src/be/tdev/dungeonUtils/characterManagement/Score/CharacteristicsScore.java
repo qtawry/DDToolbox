@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author delskev
  */
-public class CharacteristicsScore implements Serializable {
+public class CharacteristicsScore implements iScore {
     private int abilityScore;
     private int abilityModifier;
     private int tempAdjustement;
@@ -73,6 +73,7 @@ public class CharacteristicsScore implements Serializable {
      * get the addition of all the parameter for characteristic
      * @return 
      */
+    @Override
     public int getTotal() {
         return this.abilityModifier + this.abilityScore + 
                this.tempAdjustement + this.tempModifier;
@@ -81,6 +82,5 @@ public class CharacteristicsScore implements Serializable {
     
     private void ConstructAbilityScore(int abilityScore) {
         this.abilityModifier = (abilityScore - 10 ) /2 ;
-    }
-    
+    }    
 }

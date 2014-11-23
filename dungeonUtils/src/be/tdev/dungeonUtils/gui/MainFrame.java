@@ -48,6 +48,7 @@ public class MainFrame extends javax.swing.JFrame {
         listDiceHistorical = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        characterPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -58,17 +59,15 @@ public class MainFrame extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1024, 768));
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
-        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
-
         javax.swing.GroupLayout treasurePanelLayout = new javax.swing.GroupLayout(treasurePanel);
         treasurePanel.setLayout(treasurePanelLayout);
         treasurePanelLayout.setHorizontalGroup(
             treasurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 909, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
         treasurePanelLayout.setVerticalGroup(
             treasurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGap(0, 695, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Treasure", treasurePanel);
@@ -77,11 +76,11 @@ public class MainFrame extends javax.swing.JFrame {
         criticalPanel.setLayout(criticalPanelLayout);
         criticalPanelLayout.setHorizontalGroup(
             criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 909, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
         criticalPanelLayout.setVerticalGroup(
             criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGap(0, 695, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Criticals", criticalPanel);
@@ -90,11 +89,11 @@ public class MainFrame extends javax.swing.JFrame {
         cityPanel.setLayout(cityPanelLayout);
         cityPanelLayout.setHorizontalGroup(
             cityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 909, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
         cityPanelLayout.setVerticalGroup(
             cityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGap(0, 695, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("City management", cityPanel);
@@ -133,12 +132,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(diceExpression))
                     .addGroup(diceRollerPanelLayout.createSequentialGroup()
                         .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))))
                 .addGap(125, 125, 125))
         );
         diceRollerPanelLayout.setVerticalGroup(
@@ -151,7 +150,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(diceExpression, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,6 +159,19 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Dice roller", diceRollerPanel);
+
+        javax.swing.GroupLayout characterPanelLayout = new javax.swing.GroupLayout(characterPanel);
+        characterPanel.setLayout(characterPanelLayout);
+        characterPanelLayout.setHorizontalGroup(
+            characterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 950, Short.MAX_VALUE)
+        );
+        characterPanelLayout.setVerticalGroup(
+            characterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 695, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Character", characterPanel);
 
         jMenu1.setText("File");
 
@@ -274,6 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonRoll;
+    private javax.swing.JPanel characterPanel;
     private javax.swing.JPanel cityPanel;
     private javax.swing.JPanel criticalPanel;
     private javax.swing.JTextField diceExpression;

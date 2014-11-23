@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author delskev
  */
-public class ArmorClassScore implements Serializable {
+public class ArmorClassScore implements iScore {
     private int armorBonus;
     private int shieldBonus;
     private int dexterityModifier;
@@ -96,4 +96,13 @@ public class ArmorClassScore implements Serializable {
     public void setMiscModifier(int miscModifier) {
         this.miscModifier = miscModifier;
     }
+
+    @Override
+    public int getTotal() {
+        return this.armorBonus + this.deflectionModifier + 
+               this.dexterityModifier + this.miscModifier +
+               this.naturalAmrmor + this.shieldBonus +
+               this.sizeModifier;
+    }
+       
 }

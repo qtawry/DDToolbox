@@ -17,6 +17,26 @@ public class Character {
     
     
     private Characteristics characteristics;
+import be.tdev.dungeonUtils.characterManagement.classManagement.AbstractClass;
+import be.tdev.dungeonUtils.characterManagement.classManagement.Druid;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author delskev
+ */
+public class Character {
+    private String Name;
+    private int level;
+    private int health;
+    private ArrayList<AbstractClass> classes;    
+    private Characteristics characteristics;
+
+    public Character(String Name, int level, int health) {
+        this.Name = Name;
+        this.level = level;
+        this.health = health;
+    }
     
     
 }
