@@ -7,16 +7,6 @@
 package be.tdev.dungeonUtils.characterManagement;
 
 import be.tdev.dungeonUtils.characterManagement.CharacacteristicsManagement.Characteristics;
-
-/**
- *
- * @author delskev
- */
-public class Character {
-    private int health;
-    
-    
-    private Characteristics characteristics;
 import be.tdev.dungeonUtils.characterManagement.classManagement.AbstractClass;
 import be.tdev.dungeonUtils.characterManagement.classManagement.Druid;
 import java.util.ArrayList;

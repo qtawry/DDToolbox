@@ -36,12 +36,6 @@ public class CriticalTest {
         Assert.assertNull("Critic 0", this.crits.getCritical(0));
     }
     @Test
-    public void serializeTest(){
-        this.crits.serialize("crits.data");
-        Assert.assertNotNull(this.crits.deserialize("crits.data"));
-        Assert.assertEquals(this.crits, this.crits.deserialize("crits.data"));
-    }
-    @Test
     public void criticalRoll(){
         DiceRoller roller = new DiceRoller("1d20");
         roller.ParseExpression();
