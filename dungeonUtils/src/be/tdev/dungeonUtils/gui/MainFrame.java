@@ -5,9 +5,21 @@
  */
 package be.tdev.dungeonUtils.gui;
 
+import be.tdev.dungeonUtils.criticals.Critical;
+import be.tdev.dungeonUtils.criticals.CriticalList;
 import be.tdev.dungeonUtils.diceroller.DiceRoller;
+import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import jdk.nashorn.internal.objects.NativeArray;
 
 /**
  *
@@ -15,6 +27,7 @@ import javax.swing.ListModel;
  */
 public class MainFrame extends javax.swing.JFrame {
     private int numberOfDiceRolled;
+    private EntityManager em;
 
     /**
      * Creates new form MainFrame
@@ -23,7 +36,9 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         this.numberOfDiceRolled = 1;
         this.listDiceHistorical.setModel(new DefaultListModel());
-        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("src/resources/DDToolbox.odb");
+        this.em = emf.createEntityManager();
+        initCriticalList();
     }
 
     /**
@@ -38,6 +53,14 @@ public class MainFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         treasurePanel = new javax.swing.JPanel();
         criticalPanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Crit_Table = new javax.swing.JTable();
+        Crit_ComboBox = new javax.swing.JComboBox();
+        Crit_Listname = new javax.swing.JTextField();
+        Crit_CreateBtn = new javax.swing.JButton();
+        Crit_DeleteButton = new javax.swing.JButton();
+        Crit_SaveBtn = new javax.swing.JButton();
+        Crit_EditBtn = new javax.swing.JButton();
         cityPanel = new javax.swing.JPanel();
         diceRollerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -48,7 +71,6 @@ public class MainFrame extends javax.swing.JFrame {
         listDiceHistorical = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        characterPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -57,30 +79,113 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1024, 768));
-        setPreferredSize(new java.awt.Dimension(1024, 768));
+
+        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
         javax.swing.GroupLayout treasurePanelLayout = new javax.swing.GroupLayout(treasurePanel);
         treasurePanel.setLayout(treasurePanelLayout);
         treasurePanelLayout.setHorizontalGroup(
             treasurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGap(0, 1030, Short.MAX_VALUE)
         );
         treasurePanelLayout.setVerticalGroup(
             treasurePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Treasure", treasurePanel);
+
+        Crit_Table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Critical"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(Crit_Table);
+
+        Crit_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crit_ComboBoxActionPerformed(evt);
+            }
+        });
+
+        Crit_CreateBtn.setText("Create");
+        Crit_CreateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crit_CreateBtnActionPerformed(evt);
+            }
+        });
+
+        Crit_DeleteButton.setText("Delete");
+        Crit_DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crit_DeleteButtonActionPerformed(evt);
+            }
+        });
+
+        Crit_SaveBtn.setText("save");
+        Crit_SaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crit_SaveBtnActionPerformed(evt);
+            }
+        });
+
+        Crit_EditBtn.setText("Edit");
+        Crit_EditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crit_EditBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout criticalPanelLayout = new javax.swing.GroupLayout(criticalPanel);
         criticalPanel.setLayout(criticalPanelLayout);
         criticalPanelLayout.setHorizontalGroup(
             criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGroup(criticalPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Crit_CreateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(criticalPanelLayout.createSequentialGroup()
+                            .addComponent(Crit_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(Crit_DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Crit_Listname, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Crit_EditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Crit_SaveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE))
+                .addContainerGap())
         );
         criticalPanelLayout.setVerticalGroup(
             criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+            .addGroup(criticalPanelLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Crit_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Crit_DeleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(Crit_Listname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(criticalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Crit_CreateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Crit_EditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(583, Short.MAX_VALUE))
+            .addGroup(criticalPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Crit_SaveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Criticals", criticalPanel);
@@ -89,11 +194,11 @@ public class MainFrame extends javax.swing.JFrame {
         cityPanel.setLayout(cityPanelLayout);
         cityPanelLayout.setHorizontalGroup(
             cityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGap(0, 1030, Short.MAX_VALUE)
         );
         cityPanelLayout.setVerticalGroup(
             cityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("City management", cityPanel);
@@ -132,12 +237,12 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(diceExpression))
                     .addGroup(diceRollerPanelLayout.createSequentialGroup()
                         .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))))
                 .addGap(125, 125, 125))
         );
         diceRollerPanelLayout.setVerticalGroup(
@@ -150,7 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(diceRollerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(diceExpression, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,19 +264,6 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Dice roller", diceRollerPanel);
-
-        javax.swing.GroupLayout characterPanelLayout = new javax.swing.GroupLayout(characterPanel);
-        characterPanel.setLayout(characterPanelLayout);
-        characterPanelLayout.setHorizontalGroup(
-            characterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
-        );
-        characterPanelLayout.setVerticalGroup(
-            characterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Character", characterPanel);
 
         jMenu1.setText("File");
 
@@ -249,6 +341,52 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_listDiceHistoricalMouseClicked
 
+    private void Crit_CreateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crit_CreateBtnActionPerformed
+        String name = Crit_Listname.getText();
+        if (name == null || name.equals(""))
+            return;
+        this.em.getTransaction().begin();
+        CriticalList list = new CriticalList(name);
+        for(Critical c : list.getCriticals().values())
+            em.persist(c);
+        em.persist(list);
+        em.flush();
+        em.getTransaction().commit();
+        Crit_Listname.setText("");
+        initCriticalList();
+        
+    }//GEN-LAST:event_Crit_CreateBtnActionPerformed
+
+    private void Crit_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crit_ComboBoxActionPerformed
+        System.out.println("Changed");
+        CriticalList list = (CriticalList) Crit_ComboBox.getItemAt(Crit_ComboBox.getSelectedIndex());
+        Crit_Table.setModel(new CriticalTableModel(list));
+        Crit_Listname.setText(list.getName());
+    }//GEN-LAST:event_Crit_ComboBoxActionPerformed
+
+    private void Crit_SaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crit_SaveBtnActionPerformed
+        CriticalList list = (CriticalList) Crit_ComboBox.getSelectedItem();
+        this.em.getTransaction().begin();
+        em.persist(list);
+        em.getTransaction().commit();
+    }//GEN-LAST:event_Crit_SaveBtnActionPerformed
+
+    private void Crit_DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crit_DeleteButtonActionPerformed
+        this.em.getTransaction().begin();
+        this.em.remove(Crit_ComboBox.getSelectedItem());
+        this.em.getTransaction().commit();
+        initCriticalList();
+    }//GEN-LAST:event_Crit_DeleteButtonActionPerformed
+
+    private void Crit_EditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crit_EditBtnActionPerformed
+        CriticalList list = (CriticalList) Crit_ComboBox.getSelectedItem();
+        list.setName(Crit_Listname.getText());
+        this.em.getTransaction().begin();
+        this.em.persist(list);
+        this.em.getTransaction().commit();
+        initCriticalList();
+    }//GEN-LAST:event_Crit_EditBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -286,7 +424,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonRoll;
-    private javax.swing.JPanel characterPanel;
+    private javax.swing.JComboBox Crit_ComboBox;
+    private javax.swing.JButton Crit_CreateBtn;
+    private javax.swing.JButton Crit_DeleteButton;
+    private javax.swing.JButton Crit_EditBtn;
+    private javax.swing.JTextField Crit_Listname;
+    private javax.swing.JButton Crit_SaveBtn;
+    private javax.swing.JTable Crit_Table;
     private javax.swing.JPanel cityPanel;
     private javax.swing.JPanel criticalPanel;
     private javax.swing.JTextField diceExpression;
@@ -300,6 +444,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JList listDiceHistorical;
     private javax.swing.JTextPane textDiceRoller;
@@ -320,6 +465,12 @@ public class MainFrame extends javax.swing.JFrame {
         
         return dice.getResult();
         
+    }
+
+    private void initCriticalList() {
+        Query q = this.em.createQuery("select c from CriticalList c");
+        ArrayList<CriticalList> list = (ArrayList<CriticalList>) q.getResultList();
+        Crit_ComboBox.setModel(new DefaultComboBoxModel(list.toArray()));
     }
 
 
